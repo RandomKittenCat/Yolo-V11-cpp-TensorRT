@@ -7,22 +7,40 @@ project(YOLOv11TRT LANGUAGES CXX CUDA)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CUDA_COMPILER "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.8/bin/nvcc.exe")
 
 # Define the path to TensorRT installation
-set(TENSORRT_PATH "F:/Program Files/TensorRT-8.6.1.6")  # Update this to the actual path for TensorRT
+set(TENSORRT_PATH "C:/Users/colin/Downloads/TensorRT-10.8.0.43.Windows.win10.cuda-12.8/TensorRT-10.8.0.43")  # Update this to the actual path for TensorRT
 
 # Define the path to OpenCV installation
+
+# set(OpenCV_INCLUDE_DIRS "C:/ws/vcpkg/installed/x64-windows/include/opencv4")
+
+set(CMAKE_TOOLCHAIN_FILE "C:/ws/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 
 # Allow overriding TensorRT and OpenCV paths via command line
 # e.g., cmake -DTENSORRT_PATH="path/to/TensorRT" -DOpenCV_DIR="path/to/OpenCV" ..
 option(TENSORRT_PATH_OPTION "Path to TensorRT installation" ${TENSORRT_PATH})
 set(TENSORRT_PATH ${TENSORRT_PATH_OPTION} CACHE PATH "Path to TensorRT installation")
 
+set(CMAKE_PREFIX_PATH "C:/ws/vcpkg/installed/x64-windows")
+set(Protobuf_DIR "C:/ws/vcpkg/installed/x64-windows/share/protobuf")
+set(TIFF_DIR "C:/ws/vcpkg/installed/x64-windows/share/tiff")
+set(quirc_DIR "C:/ws/vcpkg/installed/x64-windows/share/quirc")
+
+
+# Set OpenCV path explicitly for vcpkg
+set(OpenCV_DIR "C:/ws/vcpkg/installed/x64-windows/share/opencv")  # Adjust this path if needed
+
 # Find OpenCV
 find_package(OpenCV REQUIRED)
 if(NOT OpenCV_FOUND)
     message(FATAL_ERROR "OpenCV not found. Please install OpenCV or set OpenCV_DIR.")
 endif()
+
+# Allow overriding TensorRT and OpenCV paths via command line
+# Include directories
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 # Find CUDA
 find_package(CUDA REQUIRED)
